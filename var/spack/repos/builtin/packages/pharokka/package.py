@@ -26,6 +26,5 @@ class Pharokka(Package):
     depends_on("aragorn@1.2.41:", type="run")
 
     def install(self, spec, prefix):
-        # FIXME: Unknown build system
-        make()
-        make("install")
+        mkdirp(prefix.bin)
+        install_tree("bin", prefix.bin)
