@@ -17,7 +17,7 @@ class Mmseqs2(CMakePackage):
     version("14-7e284", sha256="a15fd59b121073fdcc8b259fc703e5ce4c671d2c56eb5c027749f4bd4c28dfe1")
 
     variant("openmp", default=True, description="build with OpenMP support")
-    variant("mpi", default=True, description="build with MPI support")
+    variant("mpi", default=False, description="build with MPI support")
 
     depends_on("zstd")
     depends_on("llvm-openmp", when="+openmp")
