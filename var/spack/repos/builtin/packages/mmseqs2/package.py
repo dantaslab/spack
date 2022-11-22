@@ -16,12 +16,20 @@ class Mmseqs2(CMakePackage):
 
     version("14-7e284", sha256="a15fd59b121073fdcc8b259fc703e5ce4c671d2c56eb5c027749f4bd4c28dfe1")
 
-    # FIXME: Add dependencies if required.
-    # depends_on("foo")
+    variant("openmp", default=True, description="build with OpenMP support")
+    variant("mpi", default=True, description="build with MPI support")
+
+    depends_on("zstd")
+    depends_on("llvm-openmp", when="+openmp")
+    depends_on("mpi", when="+mpi")
 
     def cmake_args(self):
-        # FIXME: Add arguments other than
-        # FIXME: CMAKE_INSTALL_PREFIX and CMAKE_BUILD_TYPE
-        # FIXME: If not needed delete this function
+        spec = self.spec
         args = []
+        # use spack-installed zstd
+        args.append("-DUSE_SYSTEM_ZSTD=1")
+        if "~openmp" in spec:
+            args.append("-DREQUIRE_OPENMP=0")
+        if "~mpi" in spec:
+            args.append("-DHAVE_MPI=0")
         return args
