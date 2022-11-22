@@ -16,20 +16,28 @@ class Mmseqs2(CMakePackage):
 
     version("14-7e284", sha256="a15fd59b121073fdcc8b259fc703e5ce4c671d2c56eb5c027749f4bd4c28dfe1")
 
-    variant("openmp", default=True, description="build with OpenMP support")
+    #TODO figure out why building with openmp causes segfaults when running
+    variant("openmp", default=False, description="build with OpenMP support")
     variant("mpi", default=False, description="build with MPI support")
 
     depends_on("zstd")
-    depends_on("llvm-openmp", when="+openmp")
+    depends_on("llvm-openmp", when="%apple-clang +openmp")
     depends_on("mpi", when="+mpi")
 
     def cmake_args(self):
         spec = self.spec
         args = []
-        # use spack-installed zstd
+        args.append("-DVERSION_OVERRIDE=%s" % self.spec.version)
         args.append("-DUSE_SYSTEM_ZSTD=1")
         if "~openmp" in spec:
             args.append("-DREQUIRE_OPENMP=0")
         if "~mpi" in spec:
             args.append("-DHAVE_MPI=0")
         return args
+
+    def setup_build_environment(self, env):
+        if self.spec.satisfies("%apple-clang +openmp"):
+            env.append_flags("CPPFLAGS", self.compiler.openmp_flag)
+            env.append_flags("CFLAGS", self.spec["llvm-openmp"].headers.include_flags)
+            env.append_flags("CXXFLAGS", self.spec["llvm-openmp"].headers.include_flags)
+            env.append_flags("LDFLAGS", self.spec["llvm-openmp"].libs.ld_flags)
