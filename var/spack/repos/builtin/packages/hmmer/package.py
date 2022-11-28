@@ -14,7 +14,9 @@ class Hmmer(Package):
 
     homepage = "http://www.hmmer.org"
     url = "http://eddylab.org/software/hmmer/hmmer-3.3.tar.gz"
+    git = "https://github.com/EddyRivasLab/hmmer.git"
 
+    version("develop", branch="develop")
     version("3.3.2", sha256="92fee9b5efe37a5276352d3502775e7c46e9f7a0ee45a331eacb2a0cac713c69")
     version("3.3", sha256="0186bf40af67032666014971ed8ddc3cf2834bebc2be5b3bc0304a93e763736c")
     version("3.2.1", sha256="a56129f9d786ec25265774519fc4e736bbc16e4076946dcbd7f2c16efc8e2b9c")
@@ -29,6 +31,12 @@ class Hmmer(Package):
 
     depends_on("mpi", when="+mpi")
     depends_on("gsl", when="+gsl")
+    depends_on("easel", when="@develop")
+    depends_on("autoconf", when="@develop")
+
+    # need to build github version with ARM/aarch64
+    # https://github.com/EddyRivasLab/hmmer/issues/283
+    conflicts("target=aarch64:", when="@:3.3.2")
 
     def install(self, spec, prefix):
         configure_args = ["--prefix={0}".format(prefix)]
@@ -38,6 +46,9 @@ class Hmmer(Package):
 
         if "+mpi" in self.spec:
             configure_args.append("--enable-mpi")
+
+        if self.version == Version("develop"):
+            autoconf()
 
         configure(*configure_args)
         make()

@@ -14,7 +14,9 @@ class Infernal(AutotoolsPackage):
 
     homepage = "http://eddylab.org/infernal/"
     url = "http://eddylab.org/infernal/infernal-1.1.2.tar.gz"
+    git = "https://github.com/EddyRivasLab/infernal.git"
 
+    version("develop", branch="develop") 
     version("1.1.4", sha256="f9493c7dee9fbf25f6405706818883d24b9f5e455121a0662c96c8f0307f95fc")
     version("1.1.3", sha256="3b98a6a3a0e7b01aa077a0caf1e958223c4d8f80a69a4eb602ca59a3475da85e")
     version("1.1.2", sha256="ac8c24f484205cfb7124c38d6dc638a28f2b9035b9433efec5dc753c7e84226b")
@@ -22,6 +24,15 @@ class Infernal(AutotoolsPackage):
     variant("mpi", default=False, description="Enable MPI parallel support")
 
     depends_on("mpi", when="+mpi")
+    depends_on("autoconf", when="@develop build_system=autotools", type="build")
+    depends_on("automake", when="@develop build_system=autotools", type="build")
+    depends_on("libtool", when="@develop build_system=autotools", type="build")
+    depends_on("hmmer", when="@develop")
+    depends_on("easel", when="@develop")
+
+    # need to build github version with ARM/aarch64
+    # https://github.com/EddyRivasLab/infernal/issues/30
+    conflicts("target=aarch64:", when="@:1.1.4")
 
     def configure_args(self):
         args = []
