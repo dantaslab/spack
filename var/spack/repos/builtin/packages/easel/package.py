@@ -20,3 +20,7 @@ class Easel(AutotoolsPackage):
     depends_on("automake", type="build")
     depends_on("libtool", type="build")
     depends_on("m4", type="build")
+
+    def install(self, spec, prefix):
+        # hmmer and infernal develop branch needs m4 files to build
+        install_tree("m4", prefix.m4)

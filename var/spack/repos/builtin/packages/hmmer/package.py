@@ -38,8 +38,16 @@ class Hmmer(Package):
     # https://github.com/EddyRivasLab/hmmer/issues/283
     conflicts("target=aarch64:", when="@:3.3.2")
 
+    def setup_build_environment(self, env):
+        if self.version == Version("version"):
+            env.set("ESLDIR", self.spec["easel"].prefix)
+
     def install(self, spec, prefix):
-        configure_args = ["--prefix={0}".format(prefix)]
+        if self.version == Version("develop"):
+            configure_args = ["--prefix={0}".format(prefix),
+                              "--HMMER_ESLDIR".format(env.set("ESLDIR", self.spec["easel"].prefix))]
+        else:
+            configure_args = ["--prefix={0}".format(prefix)]
 
         if "+gsl" in self.spec:
             configure_args.extend(["--with-gsl", "LIBS=-lgsl -lgslcblas"])
