@@ -19,6 +19,7 @@ class Pharokka(Package):
     depends_on("py-bcbio-gff", type="run")
     depends_on("py-biopython@1.78:", type="run")
     depends_on("py-phanotate@1.5.0:", type="run")
+    depends_on("py-pandas", type="run")
     depends_on("mmseqs2@13.45111", type="run")
     depends_on("trnascan-se@2.0.9:", type="run")
     depends_on("prodigal@2.6.3:", type="run")
