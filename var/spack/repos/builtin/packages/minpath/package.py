@@ -23,24 +23,20 @@
 from spack.package import *
 
 
-class PyMinpath(PythonPackage):
-    """FIXME: Put a prwoper description of your package here."""
+class Minpath(Package):
+    """MinPath (Minimal set of Pathways) is a parsimony approach for biological
+    pathway reconstructions using protein family predictions, achieving a more
+    conservative, yet more faithful, estimation of the biological pathways for a
+    query dataset"""
 
-    # FIXME: Add a proper url for your package's homepage here.
-    homepage = "https://www.example.com"
-    url = "https://omics.informatics.indiana.edu/mg/get.php?software=minpath1.4.tar.gz"
+    homepage = "https://omics.informatics.indiana.edu/MinPath/"
+    url = "https://omics.informatics.indiana.edu/mg/get.php?justdoit=yes&software=minpath1.4.tar.gz"
 
-    # FIXME: Add a list of GitHub accounts to
-    # notify when the package is updated.
-    # maintainers("github_user1", "github_user2")
+    version("1.4", sha256="665e90b5ee7fa5837d13b1145cdf3eafa691d25c1ce4bb76847dfa771ff24551")
+    version("1.2", sha256="f57a7c6a83d5ae366e08069d4b12a7c12fae8aa25d35fea5cfbe75cacbcd04de")
 
-    # FIXME: Add proper versions and checksums here.
-    # version("1.2.3", "0123456789abcdef0123456789abcdef")
-
-    # FIXME: Add dependencies if required.
-    # depends_on("foo")
+    depends_on("python")
 
     def install(self, spec, prefix):
-        # FIXME: Unknowdn build system
-        make()
-        make("install")
+        mkdirp(prefix.bin)
+        install("MinPath{0}.py".format(self.version), prefix.bin)
