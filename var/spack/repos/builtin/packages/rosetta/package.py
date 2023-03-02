@@ -16,11 +16,13 @@ class Rosetta(Package):
     macromolecules and macromolecular complexes."""
 
     homepage = "https://www.rosettacommons.org/"
-    url = "file://{0}/rosetta_src_{1}_bundle.tgz".format(os.getcwd(), version)
     manual_download = True
 
     version("3.13", "00b8ee6dfafcefc1b9502bd41f952d59")
     version("3.12", "d20a9e5c97f2759723e517cdaa85fb7c")
+
+    def url_for_version(self, version):
+        return "file://{0}/rosetta_src_{1}_bundle.tgz".format(os.getcwd(), version)
 
     depends_on("python", type="build")
     depends_on("scons", type="build")
