@@ -14,19 +14,19 @@ class RosettaddgpredictionGit(PythonPackage):
     the results."""
 
     homepage = "https://github.com/ELELAB/RosettaDDGPrediction"
-    url = "https://github.com/ELELAB/RosettaDDGPrediction.git"
+    git = "https://github.com/ELELAB/RosettaDDGPrediction.git"
 
     version("master", branch="master")
 
     # non-python deps
-    depends_on("rosetta", type="run")
+    #depends_on("rosetta", type="run")
 
     # python-deps
     depends_on("py-biopython", type=("build", "run"))
     depends_on("py-dask", type=("build", "run"))
     depends_on("py-distributed", type=("build", "run"))
     depends_on("py-matplotlib", type=("build", "run"))
-    depends_on("py-MDAnalysis", type=("build", "run"))
+    depends_on("py-mdanalysis", type=("build", "run"))
     depends_on("py-numpy", type=("build", "run"))
     depends_on("py-pandas", type=("build", "run"))
     depends_on("py-pyyaml", type=("build", "run"))
