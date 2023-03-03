@@ -4,7 +4,6 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 import os
-from spack.build_environment import MakeExecutable, determine_number_of_jobs
 from spack.package import *
 
 
@@ -18,15 +17,15 @@ class Rosetta(Package):
     homepage = "https://www.rosettacommons.org/"
     manual_download = True
 
-    version("3.13", "00b8ee6dfafcefc1b9502bd41f952d59")
-    version("3.12", "d20a9e5c97f2759723e517cdaa85fb7c")
+    version("3.13", "3033624bb93f3fd2daed37c81d2e7640")
+    version("3.12", "0b2462bee2d41053ec8fca7ee1fa632d")
 
     def url_for_version(self, version):
-        return "file://{0}/rosetta_src_{1}_bundle.tgz".format(os.getcwd(), version)
+        return "file://{0}/rosetta_linux_bin_{1}_bundle.tgz".format(os.getcwd(), version)
 
-    depends_on("python", type="build")
-    depends_on("scons", type="build")
-
+    # compiling is turning into a nuge pain, so I'm just going to copy the
+    # pre-compiled static binaries. Maybe when I have more time I'll take a
+    # crack at it (I won't)
     def install(self, spec, prefix):
-        with working_dir(self.build_directory):
-            self.python("scons.py", "-j {0}".format(jobs), "mode=release", "bin")
+        mkdir(prefix.bin)
+        install_tree("./main/source/bin", prefix.bin)
