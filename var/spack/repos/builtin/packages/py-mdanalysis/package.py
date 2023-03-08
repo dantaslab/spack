@@ -16,6 +16,7 @@ class PyMdanalysis(PythonPackage):
     homepage = "https://www.mdanalysis.org"
     pypi = "MDAnalysis/MDAnalysis-0.19.2.tar.gz"
 
+    version("2.4.2", sha256="ae2ee5627391e73f74eaa3c547af3ec6ab8b040d27dedffe3a7ece8e0cd27636")
     version("1.0.0", sha256="f45a024aca45e390ff1c45ca90beb2180b78881be377e2a1aa9cd6c109bcfa81")
     version("0.20.1", sha256="d04b71b193b9716d2597ffb9938b93f43487fa535da1bb5c1f2baccf356d7df9")
     version("0.19.2", sha256="c5395bbafa5efca2e1aee4715d26129844140c47cb8301da0293106cb969de7d")
@@ -28,16 +29,85 @@ class PyMdanalysis(PythonPackage):
     version("0.16.0", sha256="c4824fa1fddd336daa39371436187ebb023366885fb250c2827ed7fce2546bd4")
     version("0.15.0", sha256="9088786048b47339cba1f8a586977bbb3bb04ae1bcd0462b59e45bda37e25533")
 
-    variant(
-        "analysis",
-        default=True,
-        description="Enable analysis packages: matplotlib, scipy, seaborn",
-    )
-    variant("amber", default=False, description="Support AMBER netcdf format.")
+    depends_on("python@3.8:", when="@2.2:", type=("build", "run")
+    depends_on("py-setuptools", type="build")
 
+    # requirements.txt
+    depends_on("py-biopython@1.80:", type=("build", "run"))
+    depends_on("py-codecov", type=("build", "run"))
+    depends_on("py-fasteners", type=("build", "run"))
+    depends_on("py-hypothesis", type=("build", "run"))
+    depends_on("py-joblib@0.12:", type=("build", "run"))
+    depends_on("py-msmb_theme@1.2.0", type=("build", "run"))
+    depends_on("py-netcdf4", type=("build", "run"))
+    depends_on("py-packaging", type=("build", "run"))
+    depends_on("py-parmed", type=("build", "run"))
+    depends_on("py-pytest", type=("build", "run"))
+    depends_on("py-scikit-learn", type=("build", "run"))
+    depends_on("py-seaborn@0.7.0:0.9", type=("build", "run"))
+    depends_on("py-sphinx@1.8.5", type=("build", "run"))
+    depends_on("py-sphinx_rtd_theme", type=("build", "run"))
+    depends_on("py-sphinx_sitemap", type=("build", "run"))
+
+    # pyproject.toml
+    depends_on("py-cython@0.28:", type=("build", "run"))
+    depends_on("py-networkx@2.0:", type=("build", "run"))
+    depends_on("py-griddataformats@0.4.0:", type=("build", "run"))
+    depends_on("py-mmtf-python@1.0.0:", type=("build", "run"))
+    depends_on("py-scipy@1.5.0:", type=("build", "run"))
+    depends_on("py-matplotlib@1.5.1", type=("build", "run"))
+    depends_on("py-tqdm@4.43.0", type=("build", "run"))
+    depends_on("py-gsd@1.9.3", type=("build", "run"))
+    # build with oldest version of NumPy possible
+    depends_on(
+        "py-numpy@1.23.2",
+        when="@2.4.0: python@3.11",
+        type=("build", "run")
+    )
+    depends_on(
+        "py-numpy@1.21.6",
+        when="@2.3.0: python@3.10",
+        type=("build", "run")
+    )
+    depends_on(
+        "py-numpy@1.21.0",
+        when="@2.3.0: python@3.8:3.9 platform=darwin target=aarch64:",
+        type=("build", "run")
+        )
+    depends_on(
+        "py-numpy@1.20.0",
+        when="@2.3.0: python@3.8:3.9 platform=linux target=x86_64:",
+        type=("build", "run")
+    )
+    depends_on(
+        "py-numpy@1.13.3:",
+        when="@0.20.1:",
+        type=("build", "run")
+    )
+    depends_on(
+        "py-numpy@1.10.4:",
+        when="@0.16.0:0.19.2",
+        type=("build", "run")
+        )
+    depends_on(
+        "py-numpy@1.5.0:",
+        when="@:0.15.0",
+        type=("build", "run")
+    )
+
+
+
+
+
+
+
+
+
+
+### OLD BELOW
     depends_on("python@2.7:", type=("build", "run"))
 
-    depends_on("py-setuptools", type="build")
+
     depends_on("py-cython@0.16:", type="build")
 
     depends_on("py-six@1.4.0:", type=("build", "run"))
@@ -51,9 +121,6 @@ class PyMdanalysis(PythonPackage):
     depends_on("py-joblib", when="@0.16.0:0.20.1", type=("build", "run"))
     depends_on("py-joblib@0.12:", when="@1.0.0:", type=("build", "run"))
 
-    depends_on("py-numpy@1.5.0:", when="@:0.15.0", type=("build", "run"))
-    depends_on("py-numpy@1.10.4:", when="@0.16.0:0.19.2", type=("build", "run"))
-    depends_on("py-numpy@1.13.3:", when="@0.20.1:", type=("build", "run"))
 
     depends_on("py-biopython@1.59:", when="@:0.17.0", type=("build", "run"))
     depends_on("py-biopython@1.71:", when="@0.18.0:", type=("build", "run"))
